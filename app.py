@@ -159,7 +159,7 @@ st.markdown(
 st.markdown("---")
 st.markdown(f"""
 <div style="
-    background-color: #8F4G28; 
+    background-color: #9B59B6; 
     padding: 20px; 
     border-radius: 10px; 
     text-align: center;
