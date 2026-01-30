@@ -1,0 +1,13 @@
+name: Keep Streamlit Alive
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Toutes les 6 heures
+  workflow_dispatch:  # Permet de lancer manuellement
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Streamlit App
+        run: curl -I https://talentmatch-app-version-1.streamlit.app/
