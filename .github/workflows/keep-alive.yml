@@ -1,13 +1,20 @@
 name: Keep Streamlit Alive
-
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Toutes les 6 heures
-  workflow_dispatch:  # Permet de lancer manuellement
+    - cron: '*/15 * * * *'  # Toutes les 15 minutes
+  workflow_dispatch:
 
 jobs:
   keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Streamlit App
-        run: curl -I https://talentmatch-app-version-1.streamlit.app/
+      - name: Wake up Streamlit App
+        run: |
+          # Requête GET complète (pas juste HEAD)
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 https://talentmatch-app-version-1.streamlit.app/)
+          echo "Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "App may be sleeping, retrying in 30s..."
+            sleep 30
+            curl -s -o /dev/null --max-time 60 https://talentmatch-app-version-1.streamlit.app/
+          fi
